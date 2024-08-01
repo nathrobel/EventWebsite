@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title>Venues</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Venues</h1>
+
+    <a href="/venues/new_venue" class="btn btn-primary" style="margin-bottom: 20px;"><i class="fa fa-plus"></i> Add Venue</a>
+
+	
+    <!-- Search Form -->
+    <form th:action="@{/venues/search}" method="get" align="right">
+        <input type="text" name="query" placeholder="Search Venues"/>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    
+    
+	<!-- All Venues table -->
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+          <th><i class="fa-solid fa-building"></i> Venue</th>
+          <th><i class="fa-solid fa-person"></i> Capacity</th>
+          <th><i class="fa-solid fa-map"></i> Address</th>
+          <th><i class="fa-solid fa-clock"></i>Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${venues}">
+          <td>
+            <a th:href="@{/venues/{id}(id=${e.id})}"
+              th:text="${e.name}">My Venue
+            </a>
+          </td>
+          <td th:text="${e.capacity}">Venue Capacity</td>
+          <td th:text="${e.roadName + ', ' + e.postcode}">Address</td>
+          <td>
+		    <a th:href="@{venues/update(venueId=${e.id})}" class="btn btn-primary" style="margin-bottom: 20px;">
+		        <i class="fa fa-pencil"></i> Update Event
+		    </a>
+		  </td>        
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

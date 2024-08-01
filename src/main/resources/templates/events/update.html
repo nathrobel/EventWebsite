@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title>Update Event Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        select {
+            width: 200px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+  <div layout:fragment="content">
+    <h1>Update Event Information</h1>
+    <form id="eventForm" th:action="@{/events/update}" th:object="${event}" method="post">
+    
+      <input type="hidden" th:field="*{id}" th:value="${event.id}" name="id">
+      <div>
+        <label><i class="fa-solid fa-bolt"></i> Event:</label>
+        <input type="text" th:field="*{name}" th:value="${event.name}" name="name">
+        <div th:if="${#fields.hasErrors('name')}" class="error-message">
+          <p th:errors="*{name}"></p>
+        </div>
+      </div>
+      <div>
+        <label><i class="fa-solid fa-map-marker-alt"></i> Venue:</label>
+		<select name="venueId" th:field="*{venue.id}">
+    		<option th:each="venue : ${venues}" 
+            		th:value="${venue.id}" 
+            		th:text="${venue.name}"
+            		th:selected="${venue.id == event.venue.id}"> 
+    		</option>
+		</select>
+
+      </div>
+      <div>
+        <label><i class="fa-solid fa-calendar"></i> Date:</label>
+        <input type="date" th:field="*{date}" th:value="${#temporals.format(event.date, 'yyyy-MM-dd')}" name="date">
+        <div th:if="${#fields.hasErrors('date')}" class="error-message">
+        <p th:errors="*{date}"></p>
+      </div>
+      <div>
+        <label><i class="fa-solid fa-clock"></i> Time:</label>
+        <input type="time" th:field="*{time}" th:value="${event.time}" name="time">
+      </div>
+      <div>
+        <label><i class="fa-solid fa-file-alt"></i> Description:</label>
+        <textarea th:field="*{description}" th:value="${event.description}" name="description"></textarea>
+        <div th:if="${#fields.hasErrors('description')}" class="error-message">
+        <p th:errors="*{description}"></p>
+      </div>
+      
+      <div>
+        <button type="submit">
+          <i class="fa fa-pencil"></i> Update Event
+        </button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

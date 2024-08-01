@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/default}">
+<head>
+  <title>New</title>
+</head>
+<body>
+  <div layout:fragment="content">
+    <h1>Add a new event</h1>
+    
+    <form action="#" th:action="@{/events}" th:object="${event}" method="post">
+      <div class="form-group" th:classappend="${#fields.hasErrors('name')}? has-error">
+        <label for="name">Event name</label>
+        <input class="form-control" type="text" name="name" id="name" placeholder="Event name" autofocus="autofocus" />
+        <div class="text-danger" th:if=="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        <label for="date">Event date</label>
+        <input class="form-control" type="date" name="date" id="date" placeholder="YYYY-MM-DD" />
+        <div class="text-danger" th:if=="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+        <label for="time">Event time</label>
+        <input class="form-control" type="time" name="time" id="time" placeholder="HH:MM" />
+        <div class="text-danger" th:if=="${#fields.hasErrors('time')}" th:errors="*{time}"></div>
+        <label for="venue">Event venue</label>
+		<select class="form-control" id="venue" name="venue">
+		    <option value="">Select a venue</option>
+		    <th:block th:each="venue : ${venues}">
+		        <option th:value="${venue.id}" th:text="${venue.name}">Venue Name</option>
+		    </th:block>
+		</select>
+        <div class="text-danger" th:if=="${#fields.hasErrors('venue')}" th:errors="*{venue}"></div>
+        <label for="description">Event description</label>
+        <textarea class="form-control" name="description" id="description" placeholder="Describe the event"></textarea>
+        <div class="text-danger" th:if=="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+      </div>
+    
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-bookmark" aria-hidden="true"></i> Save</button>
+      <a class="btn btn-warning" role="button" href="/events"><i class="fa-solid fa-ban" aria-hidden="true"></i> Cancel</a>
+    </form>
+  </div>
+</body>
+</html>

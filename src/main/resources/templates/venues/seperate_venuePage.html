@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+    <title>Venue Details</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <h1>Venue Details</h1>
+
+     
+        <table class="table table-striped table-hover">
+            <tr th:each="e : ${venue}">
+                <th>Venue</th>
+                <td th:text="${e.name}">Venue Name</td>
+            </tr>
+            <tr th:each="e : ${venue}">
+                <th>Capacity</th>
+                <td th:text="${e.capacity}">Venue Capacity</td>
+            </tr>
+            <tr th:each="e : ${venue}">
+                <th>Postcode</th>
+                <td th:text="${e.postcode}">Venue Postcode</td>
+            </tr>
+            <tr th:each="e : ${venue}">
+                <th>RoadName</th>
+                <td th:text="${e.roadName}">Venue RoadName</td>
+            </tr>
+           
+        </table>
+        
+        <form th:action="@{/venues/{id}(id=${id})}" th:method="delete">
+        	<a class="btn btn-primary" role="button" href="/venues"><i class="fa-solid fa-left-long" aria-hidden="true"></i> Back</a>
+      		<button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</button>
+      	</form>
+   
+    </div>
+</body>
+
+</html>

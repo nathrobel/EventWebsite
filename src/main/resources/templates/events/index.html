@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default}">
+<head>
+	<title>Events</title>
+	<style>
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			width: 100%;
+			min-height: 500px;
+			border-radius: 20px;
+		}
+	</style>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+	<script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+	<h1>Events</h1>
+	<!-- Search Form -->
+	<a href="/events/new" class="btn btn-primary" style="margin-bottom: 20px;"><i class="fa fa-plus"></i> Create
+		Event</a>
+	<h2>Upcoming Events</h2>
+	<!-- Search Form -->
+	<form th:action="@{/events/search}" method="get" align="right">
+		<input type="text" name="query" placeholder="Search events" />
+		<button type="submit" class="btn btn-primary">Search</button>
+	</form>
+	<!-- Upcoming events table-->
+	<table class="table table-striped table-hover">
+		<thead>
+		<tr>
+			<th><i class="fa-solid fa-bolt"></i> Event</th>
+			<th><i class="fa-solid fa-map-marker-alt"></i> Venue</th>
+			<th><i class="fa-solid fa-calendar"></i> Date</th>
+			<th><i class="fa-solid fa-clock"></i> Time</th>
+			<th><i class="fa-solid fa-clock"></i>Manage</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="e : ${event}">
+			<td>
+				<a th:href="@{/events/{id}(id=${e.id})}" th:text="${e.name}">My Event Page
+				</a>
+			</td>
+			<td th:text="${e.venue.name}">Event venue</td>
+			<td th:text="${#temporals.format(e.date, 'dd MMMM yyyy')}">Event date</td>
+			<td th:text="${e.time}">Event time</td>
+			<td>
+				<a th:href="@{/events/update(eventId=${e.id})}" class="btn btn-primary" style="margin-bottom: 20px;">
+					<i class="fa fa-pencil"></i> Update Event
+				</a>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<h2>Past Events</h2>
+	<table class="table table-striped table-hover">
+		<thead>
+		<tr>
+			<th><i class="fa-solid fa-bolt"></i> Event</th>
+			<th><i class="fa-solid fa-map-marker-alt"></i> Venue</th>
+			<th><i class="fa-solid fa-calendar"></i> Date</th>
+			<th><i class="fa-solid fa-clock"></i> Time</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="e2 : ${past_event}">
+			<td>
+				<a th:href="@{/events/{id}(id=${e2.id})}"
+				   th:text="${e2.name}">My Event Page
+				</a>
+			</td>
+			<td th:text="${e2.venue.name}">Event venue</td>
+			<td th:text="${#temporals.format(e2.date, 'dd MMMM yyyy')}">Event date</td>
+			<td th:text="${e2.time}">Event time</td>
+		</tr>
+		</tbody>
+	</table>
+	<div id="map"></div>
+	<script type = "text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+	document.addEventListener('DOMContentLoaded', function() {
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaDEwIiwiYSI6ImNsdjJieG9nYTBnZHQybG9xOGowNHd6ejMifQ.yM0CR9CYCdzxATuK_qv92w';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [12.550343, 55.665957],
+        zoom: 8
+    });
+
+    // Convert Thymeleaf event object to JavaScript array
+    var futureEvents = /*[[${event}]]*/ [];
+    var places = [];
+    var bounds = new mapboxgl.LngLatBounds();
+
+    // Add markers to the map
+    futureEvents.forEach(function(e) {
+        var marker = new mapboxgl.Marker()
+            .setLngLat([e.venue.longitude, e.venue.latitude])
+            .setPopup(
+			new mapboxgl.Popup({ offset: 25 }) // add popups
+			.setHTML(
+`		<h3>${e.name}</h3><p>Starts at: ${e.time}</p>`
+		))
+            .addTo(map);
+        places.push([e.venue.longitude, e.venue.latitude]);
+        console.log(places)
+        bounds.extend([e.venue.longitude, e.venue.latitude]);
+        console.log(e.venue.longitude);
+        console.log(e.venue.latitude);
+    });
+
+    // Fit map to markers
+    map.fitBounds(bounds, { padding: 20 });
+});
+	/*]]>*/
+	</script>
+</div>
+</body>
+</html>

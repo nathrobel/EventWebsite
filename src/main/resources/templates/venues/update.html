@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title>Update Event Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        select {
+            width: 200px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+  <div layout:fragment="content">
+    <h1>Update Event Information</h1>
+    <form id="eventForm" th:action="@{/venues/update}" th:object="${venue}" method="post">
+    
+      <input type="hidden" th:field="*{id}" th:value="${venue.id}" name="id">
+      <div>
+        <label><i class="fa-solid fa-building"></i> Venue:</label>
+        <input type="text" th:field="*{name}" th:value="${venue.name}" name="name">
+        <div th:if="${#fields.hasErrors('name')}" class="error-message">
+          <p th:errors="*{name}"></p>
+        </div>
+      </div>
+      <div>
+        <label><i class="fa-solid fa-person"></i> Capacity:</label>
+        <input type="number" th:field="*{capacity}" th:value="${venue.capacity}" name="capacity">
+        <div th:if="${#fields.hasErrors('capacity')}" class="error-message">
+        <p th:errors="*{capacity}"></p>
+      </div>
+		<div>
+		    <label><i class="fa-solid fa-map"></i> Postcode:</label>
+		    <input type="text" th:field="*{postcode}" th:value="${venue.postcode}" name="postcode">
+		    <div th:if="${#fields.hasErrors('postcode')}" class="error-message">
+		        <p th:errors="*{postcode}"></p>
+		    </div>
+		</div>
+      <div>
+        <label><i class="fa-solid fa-location-dot"></i> Road name:</label>
+        <textarea th:field="*{roadName}" th:value="${venue.roadName}" name="roadName"></textarea>
+        <div th:if="${#fields.hasErrors('roadName')}" class="error-message">
+        <p th:errors="*{roadName}"></p>
+      </div>
+      
+      <div>
+        <button type="submit">
+          <i class="fa fa-pencil"></i> Update Event
+        </button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
