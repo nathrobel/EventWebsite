@@ -44,7 +44,7 @@ import uk.ac.man.cs.eventlite.exceptions.VenueNotFoundException;
 @Controller
 @RequestMapping(value = "/venues", produces = { MediaType.TEXT_HTML_VALUE })
 public class VenuesController {
-	private final String MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiaDEwIiwiYSI6ImNsdjJieG9nYTBnZHQybG9xOGowNHd6ejMifQ.yM0CR9CYCdzxATuK_qv92w";
+	private final String MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiaDEwIiwiYSI6ImNsdjJieG9nYTBnZHQybG9xOGowNHd6ejMifQ.yM0CR9CYCdzxATuK_qv91s";
 	private final static Logger log = LoggerFactory.getLogger(VenuesController.class);
 	@Autowired
 	private VenueService venueService;
