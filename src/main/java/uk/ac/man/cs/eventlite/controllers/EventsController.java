@@ -44,7 +44,7 @@ import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
 public class EventsController {
 
     private final static Logger log = LoggerFactory.getLogger(EventsController.class);
-    private final String MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiaDEwIiwiYSI6ImNsdjJieG9nYTBnZHQybG9xOGowNHd6ejMifQ.yM0CR9CYCdzxATuK_qv92w";
+    private final String MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiaDEwIiwiYSI6ImNsdjJieG9nYTBnZHQybG9xOGowNHd6ejMifQ.yM0CR9CYCdzxATuK_qv91s";
 
 	@GetMapping("/{id}")
 	public String getEvent(@PathVariable("id") long id, Model model) throws InterruptedException{
